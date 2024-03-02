@@ -11,13 +11,10 @@ import ru.alishov.springcourse.util.PersonValidator;
 
 import javax.validation.Valid;
 
-/**
- * @author Neil Alishev
- */
 @Controller
 @RequestMapping("/people")
-public class PeopleController {
-
+public class PeopleController
+{
     private final PeopleServices peopleService;
     private final PersonValidator personValidator;
 
@@ -29,13 +26,15 @@ public class PeopleController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model)
+    {
         model.addAttribute("people", peopleService.findAll());
         return "people/index";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model)
+    {
         model.addAttribute("person", peopleService.findById(id));
         model.addAttribute("books", peopleService.getBooksByPersonId(id));
 
@@ -43,13 +42,13 @@ public class PeopleController {
     }
 
     @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") Person person) {
-        return "people/new";
-    }
+    public String newPerson(@ModelAttribute("person") Person person)
+    { return "people/new"; }
 
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult)
+    {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
@@ -60,14 +59,16 @@ public class PeopleController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String edit(Model model, @PathVariable("id") int id)
+    {
         model.addAttribute("person", peopleService.findById(id));
         return "people/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
+                         @PathVariable("id") int id)
+    {
         if (bindingResult.hasErrors())
             return "people/edit";
 
@@ -76,7 +77,8 @@ public class PeopleController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable("id") int id)
+    {
         peopleService.deleteById(id);
         return "redirect:/people";
     }
